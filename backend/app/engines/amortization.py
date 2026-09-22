@@ -1,3 +1,10 @@
+from app.modules import equal_principal
+
+EQUAL_PAYMENT = "equal_payment"
+EQUAL_PRINCIPAL = equal_principal.METHOD
+METHODS = (EQUAL_PAYMENT, EQUAL_PRINCIPAL)
+
+
 def equal_payment_schedule(principal: float, annual_rate: float, months: int) -> dict:
     P = float(principal)
     n = int(months)
@@ -34,3 +41,11 @@ def equal_payment_schedule(principal: float, annual_rate: float, months: int) ->
         "total_payment": round(sum(x["payment"] for x in rows), 2),
         "rows": rows,
     }
+
+
+def schedule(principal: float, annual_rate: float, months: int, method: str = EQUAL_PAYMENT) -> dict:
+    if method == EQUAL_PAYMENT:
+        return equal_payment_schedule(principal, annual_rate, months)
+    if method == EQUAL_PRINCIPAL:
+        return equal_principal.schedule(principal, annual_rate, months)
+    raise ValueError(f"unknown method: {method}")
