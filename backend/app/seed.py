@@ -14,8 +14,8 @@ def init_db():
         conn.execute("INSERT INTO loans(name,principal,annual_rate,months) VALUES ('高利率种子',800000,6.8,240)")
         conn.execute("INSERT INTO settings(key,value) VALUES ('method','equal_payment')")
         sch = equal_payment_schedule(1000000, 3.5, 360)
-        slim = {"monthly_payment": sch["monthly_payment"], "total_interest": sch["total_interest"], "preview": sch["rows"][:3]}
+        slim = {"method": "equal_payment", "monthly_payment": sch["monthly_payment"], "total_interest": sch["total_interest"], "preview": sch["rows"][:3]}
         conn.execute("INSERT INTO calc_runs(kind,loan_id,input_json,result_json,created_at) VALUES ('schedule',1,?,?,datetime('now'))",
-            (json.dumps({"principal": 1000000, "annual_rate": 3.5, "months": 360}), json.dumps(slim)))
+            (json.dumps({"principal": 1000000, "annual_rate": 3.5, "months": 360, "method": "equal_payment"}), json.dumps(slim)))
         conn.commit()
     conn.close()
